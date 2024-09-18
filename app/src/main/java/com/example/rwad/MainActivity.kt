@@ -21,29 +21,79 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        val maleBtn: Button = findViewById(R.id.maleBtn)
+        val femleBtn: Button = findViewById(R.id.femaleBtn)
+        val heightText: TextView = findViewById(R.id.heightTxt)
+        val weightText: TextView = findViewById(R.id.weightTxt)
+        val heightSeekBar: SeekBar = findViewById(R.id.heightSeekBar)
+        val weightSeekBar: SeekBar = findViewById(R.id.weightSeekBar)
+        val calculateBtn: Button = findViewById(R.id.calcBtn)
+        var selectedGender = Gender.FEMALE
+        var selectedHeight = 0.0
+        var selectedWeight = 0.0
 
-        val rollBtn: Button = findViewById(R.id.rollButton)
+        maleBtn.setOnClickListener() {
+            maleBtn.setBackgroundColor(Color.parseColor("#2196F3"))
+            femleBtn.setBackgroundColor(Color.parseColor("#5F6162"))
+            selectedGender = Gender.MALE
+        }
 
-        rollBtn.setOnClickListener() {
-            rollDice()
+        femleBtn.setOnClickListener() {
+            femleBtn.setBackgroundColor(Color.parseColor("#2196F3"))
+            maleBtn.setBackgroundColor(Color.parseColor("#5F6162"))
+            selectedGender = Gender.FEMALE
+        }
+
+        heightSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                heightText.text = "Height: $progress cm"
+                selectedHeight = progress.toDouble()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                // Do something
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                // Do something
+            }
+        })
+
+        weightSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                weightText.text = "Weight: $progress kg"
+                selectedWeight = progress.toDouble()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                // Do something
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                // Do something
+            }
+        })
+        calculateBtn.setOnClickListener() {
+            val bmi: Double = selectedWeight / (selectedHeight / 100 * selectedHeight / 100)
+            val result = when (bmi) {
+                in 0.0..18.5 -> "Underweight"
+                in 18.0..24.9 -> "Normal weight"
+                in 25.0..29.9 -> "Overweight"
+                in 30.0..34.9 -> "Obesity class 1"
+                in 35.0..39.9 -> "Obesity class 2"
+                else -> "Obesity class 3"
+            }
+            AlertDialog.Builder(this).setTitle("Result")
+                .setMessage("Your BMI is ${bmi.toInt()} and you are $result")
+                .setPositiveButton("OK") { dialog, which -> }.show()
         }
 
 
     }
 
-    private fun rollDice() {
-        val image: ImageView = findViewById(R.id.imageView)
-        val randomInt = (1..6).random()
-        val drawableResource = when (randomInt) {
-            1 -> R.drawable.dice_1
-            2 -> R.drawable.dice_2
-            3 -> R.drawable.dice_3
-            4 -> R.drawable.dice_4
-            5 -> R.drawable.dice_5
-            else -> R.drawable.dice_6
-        }
-        image.setImageResource(drawableResource)
 
-    }
+}
 
+enum class Gender {
+    MALE, FEMALE
 }
