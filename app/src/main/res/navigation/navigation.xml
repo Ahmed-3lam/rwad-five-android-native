@@ -20,11 +20,21 @@
         tools:layout="@layout/fragment_question" >
         <action
             android:id="@+id/action_questionFragment_to_successFragment"
-            app:destination="@id/successFragment" />
+            app:destination="@id/successFragment"
+            app:popUpTo="@id/homeFragment" />
+        <action
+            android:id="@+id/action_questionFragment_to_failureFragment"
+            app:destination="@id/failureFragment"
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/successFragment"
         android:name="com.example.rwad.SuccessFragment"
         android:label="fragment_success"
         tools:layout="@layout/fragment_success" />
+    <fragment
+        android:id="@+id/failureFragment"
+        android:name="com.example.rwad.FailureFragment"
+        android:label="fragment_failure"
+        tools:layout="@layout/fragment_failure" />
 </navigation>
